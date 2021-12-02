@@ -8,27 +8,27 @@ class Round {
 
     };
     returnCurrentCard(){
-        var i = 0
-        return this.deck.cards[i]
+        return this.deck.cards[this.turns]
     };
 
     takeTurn(guess){
-        const turn = new Turn(guess, this.deck.cards[i]);
-        turns++
-        i++;
+        const turn = new Turn(guess, this.deck.cards[this.turns]);
+        this.turns++
         if(!turn.evaluateGuess){
             this.incorrectGuesses.push(this.deck.cards[i].id);
         };
-        turn.evaluateGuess;
+        return turn.giveFeedback();
 
     };
 
     calculatePercentCorrect(){
-        return 100 * this.incorrectGuesses.length / this.deck.length;
+        const correctGuesses = (this.turns - this.incorrectGuesses.length);
+        return Math.round((correctGuesses / this.turns) * 100);
     };
 
     endRound(){
-        return `** Round over! ** You answered ${this.calculatePercentCorrect()}% of the questions correctly!`
+        console.log(`** Round over! ** You answered ${this.calculatePercentCorrect()}% of the questions correctly!`);
+        this.turns = 0;
     };
 };
 
