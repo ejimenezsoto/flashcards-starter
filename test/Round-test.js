@@ -20,33 +20,80 @@ describe('Round', function(){
     });
 
     it('should return current card', function(){
-            var card1 = new Card(2,
-            "What is a comma-separated list of related values?",
-            ["array", "object", "function"],
-            "array");
-    
-            var card2 = new Card(3,
-            "What type of prototype method directly modifies the existing array?",
-            ["mutator method", "accessor method", "iteration method"],
-            "mutator method");
-    
-            var card3 = new Card(5,
-            "What type of prototype method loops through the existing array and applies a callback function that may mutate each element and return a new value?",
-            ["mutator method", "accessor method", "iteration method"],
-            "iteration method");
+        const card1 = new Card(1, 'What is Robbie\'s favorite animal', ['sea otter', 'pug', 'capybara'], 'sea otter');
+        const card2 = new Card(14, 'What organ is Khalid missing?', ['spleen', 'appendix', 'gallbladder'], 'gallbladder');
+        const card3 = new Card(12, 'What is Travis\'s favorite stress reliever?', ['listening to music', 'watching Netflix', 'playing with bubble wrap'], 'playing with bubble wrap');
 
-            var deck = new Deck([card1,card2,card3]);
-            var round = new Round(deck);
-            var turn = new Turn('array',round.returnCurrentCard());
+        const deck = new Deck([card1,card2,card3]);
+        const round = new Round(deck);
+        const turn = new Turn('array',round.returnCurrentCard());
 
             expect(round.returnCurrentCard()).to.deep.equal({
-                question: 'What is a comma-separated list of related values?',
-                answers: [ 'array', 'object', 'function' ],
-                correctAnswer: 'array'
+                question: "What is Robbie's favorite animal",
+                answers: [ 'sea otter', 'pug', 'capybara' ],
+                correctAnswer: 'sea otter'
             });
     });
 
-    it('should ')
+    it('should take turn', function(){
+        const card1 = new Card(1, 'What is Robbie\'s favorite animal', ['sea otter', 'pug', 'capybara'], 'sea otter');
+        const card2 = new Card(14, 'What organ is Khalid missing?', ['spleen', 'appendix', 'gallbladder'], 'gallbladder');
+        const card3 = new Card(12, 'What is Travis\'s favorite stress reliever?', ['listening to music', 'watching Netflix', 'playing with bubble wrap'], 'playing with bubble wrap');
+
+        const deck = new Deck([card1,card2,card3]);
+        const round = new Round(deck);
+        const turn = new Turn('array',round.returnCurrentCard());
+        round.takeTurn('otter')
+
+        expect(round.turns).to.equal(1);
+
+    })
+
+    it('should give feedback', function(){
+        const card1 = new Card(1, 'What is Robbie\'s favorite animal', ['sea otter', 'pug', 'capybara'], 'sea otter');
+        const card2 = new Card(14, 'What organ is Khalid missing?', ['spleen', 'appendix', 'gallbladder'], 'gallbladder');
+        const card3 = new Card(12, 'What is Travis\'s favorite stress reliever?', ['listening to music', 'watching Netflix', 'playing with bubble wrap'], 'playing with bubble wrap');
+
+        const deck = new Deck([card1,card2,card3]);
+        const round = new Round(deck);
+        const turn = new Turn('array',round.returnCurrentCard());
+
+        expect(round.takeTurn('sea otter')).to.equal('Correct!');
+
+    });
+
+    it('should calculate percentage correct', function(){
+        const card1 = new Card(1, 'What is Robbie\'s favorite animal', ['sea otter', 'pug', 'capybara'], 'sea otter');
+        const card2 = new Card(14, 'What organ is Khalid missing?', ['spleen', 'appendix', 'gallbladder'], 'gallbladder');
+        const card3 = new Card(12, 'What is Travis\'s favorite stress reliever?', ['listening to music', 'watching Netflix', 'playing with bubble wrap'], 'playing with bubble wrap');
+
+        const deck = new Deck([card1,card2,card3]);
+        const round = new Round(deck);
+        const turn = new Turn('sea otter',round.returnCurrentCard());
+        round.takeTurn('sea otter');
+        round.takeTurn('gallbladder');
+        round.takeTurn('playing with bubble wrap');
+
+        expect(round.calculatePercentCorrect()).to.equal(100);
+
+    });
+
+    it('should calculate percentage correct', function(){
+        const card1 = new Card(1, 'What is Robbie\'s favorite animal', ['sea otter', 'pug', 'capybara'], 'sea otter');
+        const card2 = new Card(14, 'What organ is Khalid missing?', ['spleen', 'appendix', 'gallbladder'], 'gallbladder');
+        const card3 = new Card(12, 'What is Travis\'s favorite stress reliever?', ['listening to music', 'watching Netflix', 'playing with bubble wrap'], 'playing with bubble wrap');
+
+        const deck = new Deck([card1,card2,card3]);
+        const round = new Round(deck);
+        const turn = new Turn('sea otter',round.returnCurrentCard());
+        round.takeTurn('sea otter');
+        round.takeTurn('gallbladder');
+        round.takeTurn('playing with bubble wrap');
+
+        expect(round.endRound()).to.equal('** Round over! ** You answered 100% of the questions correctly!');
+    });
+
+
 });
 
 
